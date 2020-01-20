@@ -1,26 +1,42 @@
-import React, { useState } from 'react'; 
+import React from 'react';
+import './global.css';
+import './app.css';
+import './sidebar.css';
 
-// Componente: Função que retorna algum conteudo HTML / bloco isolado de Html Css e Js
-// Estado: informação mantida pelo componente 
-// propriedade: informações que o componente PAI passa para o componente FILHO
-import Header from './Header';
+
 
 function App(){
+    return (
+        <div id="app">
+            <aside>
+                <strong>Cadastrar</strong>
+                    <form>
+                        <div class="input-block">
+                            <label htmlFor="github_username">Usuário do Github</label>
+                            <input name="github_username" id="username_github" required />
+                        </div>
 
-    const [counter, setCounter ] = useState(0);  
+                        <div class="input-block">
+                            <label htmlFor="techs">Usuário do Github</label>
+                            <input name="techs" id="techs" required />
+                        </div>
 
-    function IncrementarCount(){
-        setCounter(counter + 1);
-    }
-    return(
-        <>
-        <Header title="t 1"/>
-        <Header title="t 2"/>
-        <Header title="t 3"/>
-        <h1> Contador: {counter}</h1>
-        <button onClick={IncrementarCount}>Incrementar</button>
-        </>
+                        <div className="input-group">
+                            <div class="input-block">
+                                <label htmlFor="latitude">Latitude</label>
+                                <input name="latitude" id="latitude" required />
+                            </div>
+                            <div class="input-block">
+                                <label htmlFor="longitude">longitude</label>
+                                <input name="longitude" id="longitude" required />
+                            </div>
+                        </div>
+                        <button type="submit">Salvar</button>
+                    </form>
+            </aside>
+            <main></main>
+        </div>
     );
-    //fragmentar 
 }
+
 export default App;

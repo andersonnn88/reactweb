@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'; 
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// Componente: Função que retorna algum conteudo HTML / bloco isolado de Html Css e Js
+// Estado: informação mantida pelo componente 
+// propriedade: informações que o componente PAI passa para o componente FILHO
+import Header from './Header';
+
+function App(){
+
+    const [counter, setCounter ] = useState(0);  
+
+    function IncrementarCount(){
+        setCounter(counter + 1);
+    }
+    return(
+        <>
+        <Header title="t 1"/>
+        <Header title="t 2"/>
+        <Header title="t 3"/>
+        <h1> Contador: {counter}</h1>
+        <button onClick={IncrementarCount}>Incrementar</button>
+        </>
+    );
+    //fragmentar 
 }
-
 export default App;

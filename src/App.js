@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from './services/api';
 import './global.css';
 import './app.css';
 import './main.css';
@@ -7,6 +8,8 @@ import './sidebar.css';
 
 
 function App(){
+    const [devs, setdevs] =useState([]);
+
     const [github_username, setGithub_username] =useState('');
     const [techs, setTechs] =useState('');
 
@@ -30,15 +33,35 @@ function App(){
         )
     }, []);
 
+    useEffect(()=>{
+        async function loadDevs(){
+            const response =await api.get('/devs');
+
+            setdevs(response.data);
+        }
+            loadDevs();
+    }, []);
+
     async function handleAddDev(e){
         e.preventDefault();
+        const response = await api.post('/devs',{
+            github_username,
+            techs,
+            latitude,
+            longitude,
+        });
+        
+        setGithub_username('');
+        setTechs('');
+
+        setdevs([...devs, response.data]);// adição dentro de um array no javascript
         
     }
     return (
         <div id="app">
             <aside>
                 <strong>Cadastrar</strong>
-                    <form>
+                    <form onSubmit={handleAddDev}>
                         <div className="input-block">
                             <label htmlFor="github_username">Usuário do Github</label>
                             <input 
@@ -51,7 +74,7 @@ function App(){
                         </div>
 
                         <div className="input-block">
-                            <label htmlFor="techs">Usuário do Github</label>
+                            <label htmlFor="techs">Tecnologia</label>
                             <input
                              name="techs" 
                              id="techs" 
@@ -88,55 +111,21 @@ function App(){
             </aside>
             <main>
                 <ul>
-                    <li className="dev-item">
+                    {devs.map(dev =>(
+                        <li key={dev._id} className="dev-item">
                         <header>
-                        <img src="https://avatars0.githubusercontent.com/u/35690587?s=460&v=4"   alt="Anderson Araujo"/>
+                        <img src={dev.avatar_url}   alt={dev.name}/>
                             <div className="user-info">
-                                <strong>Anderson Araujo</strong>
-                                <span>ReackJS, Reack Native</span>
+                                <strong>{dev.name}</strong>
+                                <span>{dev.techs.join(', ')}</span>
                             </div>
                         </header>
-
-                        <p>Apainonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/andersonnn88">Acessar perfi no Github</a>
-                    </li>
-                    <li className="dev-item">
-                        <header>
-                        <img src="https://avatars0.githubusercontent.com/u/35690587?s=460&v=4"   alt="Anderson Araujo"/>
-                            <div className="user-info">
-                                <strong>Anderson Araujo</strong>
-                                <span>ReackJS, Reack Native</span>
-                            </div>
-                        </header>
-
-                        <p>Apainonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/andersonnn88">Acessar perfi no Github</a>
-                    </li>
-                    <li className="dev-item">
-                        <header>
-                        <img src="https://avatars0.githubusercontent.com/u/35690587?s=460&v=4"   alt="Anderson Araujo"/>
-                            <div className="user-info">
-                                <strong>Anderson Araujo</strong>
-                                <span>ReackJS, Reack Native</span>
-                            </div>
-                        </header>
-
-                        <p>Apainonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/andersonnn88">Acessar perfi no Github</a>
-                    </li>
-                 <li className="dev-item">
-                        <header>
-                            <img src="https://avatars0.githubusercontent.com/u/35690587?s=460&v=4"   alt="Anderson Araujo"/>
-                            <div className="user-info">
-                                <strong>Anderson Araujo</strong>
-                                <span>ReackJS, Reack Native</span>
-                            </div>
-                        </header>
-
-                        <p>Apainonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/andersonnn88">Acessar perfi no Github</a>
-                    </li>
-                    </ul>
+                         <p>{dev.bio}</p>
+                        <a href={`https://github.com/${dev.github_username}`}>Acessar perfi no Github</a>
+                        </li>
+                    ))}
+        
+                </ul>
             </main>
         </div>
     );
